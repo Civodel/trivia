@@ -66,14 +66,14 @@ class Trivia {
 
 
         if (document.getElementById('typo').value === 'multiple') {
-           
+
             const papa = document.getElementById('multiple')
             papa.innerHTML = '';
 
             this.juntarOpciones();
             this.finalAnwers = this.acomodarOpciones();
 
-    
+
             const clickboton = (event) => {
                 if (this.opcionCorrecta === event.target.value) {
                     ala.innerHTML = ' o:';
@@ -104,3 +104,4 @@ export default Trivia;
         op3.value = this.finalAnwers[2];
         op4.innerHTML = this.finalAnwers[3];
         op4.value = this.finalAnwers[3]; */
+//ola
