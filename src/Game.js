@@ -6,6 +6,7 @@ class Trivia {
         this.finalAnwers = [0, 0, 0, 0];
         this.correctAnswer;
         this.arrayTorF = ['True', 'False'];
+        this.state = false;
         this.isOk = false;
     }
     get primerLugardellArray() {
@@ -38,11 +39,11 @@ class Trivia {
     }
     acomodarOpciones() {
         for (let i = 0; i < this.finalAnwers.length; i++) {
-            if (this.finalAnwers[i] === 0) {
-                let rnd = this.generaRandomPos(this.answers.length);
-                this.finalAnwers[i] = this.answers[rnd];
-                this.answers.splice(rnd, 1);
-            }
+
+            let rnd = this.generaRandomPos(this.answers.length);
+            this.finalAnwers[i] = this.answers[rnd];
+            this.answers.splice(rnd, 1);
+
         }
         return this.finalAnwers;
     }
@@ -55,19 +56,43 @@ class Trivia {
         button.id = respuestas;
         button.value = respuestas;
         button.addEventListener('click', cb)
+
         return button;
 
     }
-    botonToF(respuesta, cb) {
+    botonReset(any, cb) {
         const button = document.createElement('button');
         button.type = 'button';
-        button.innerText = respuesta;
-        button.id = respuesta;
-        button.value = respuesta;
+        button.innerText = any;
+        button.id = any;
+        button.value = any;
         button.addEventListener('click', cb)
         return button;
     }
 
+    restart() {
+        this.arrayQuestions.shift();
+        this.start();
+    };
+    compruebaestado(estate) {
+        if (estate === true) {
+            this.restart();
+        }
+    };
+
+    generaRespuestas(papa, clickboton) {
+        this.arrayQuestions.shift();
+        this.juntarOpciones();
+        this.acomodarOpciones();
+
+        this.finalAnwers = this.acomodarOpciones();
+        this.finalAnwers.forEach(opcion => {
+            const otpsett = this.botonOpcionMultiple(opcion, clickboton);
+            papa.appendChild(otpsett);
+        })
+        console.log('kepedo');
+
+    };
 
     start() {
         const pregun = document.getElementById('qqq');
@@ -77,49 +102,34 @@ class Trivia {
         papa2.innerHTML = '';
         papa1.innerHTML = '';
         pregun.innerHTML = this.obtenerPregunta();
-
-
         if (document.getElementById('typo').value === 'multiple') {
-
-
-
-
+            this.state = false;
             this.juntarOpciones();
             this.finalAnwers = this.acomodarOpciones();
 
 
             const clickboton = (event) => {
-
+                this.state = true;
                 if (this.opcionCorrecta === event.target.value) {
-                    ala.innerHTML = ' o:';
+                    ala.innerHTML = 'o:';
+
+                    this.arrayQuestions.shift();
+                    this.start();
+                    console.log(this.arrayQuestions);
 
                 } else {
                     ala.innerHTML = 'no mames carnal que pedo';
                 }
-
             }
-
-
             this.finalAnwers.forEach(opcion => {
                 const otpsett = this.botonOpcionMultiple(opcion, clickboton);
                 papa1.appendChild(otpsett);
-
-            })
-            setTimeout(() => {
-                this.arrayQuestions.shift();
-                console.log(this.arrayQuestions);
-                this.start();
-            }, 3000);
-
-
-
+            });
 
 
         } else {
-
-
-
             const clickboton = (event) => {
+
                 if (this.opcionCorrecta === event.target.value) {
                     ala.innerHTML = ' o:';
                 } else {
@@ -127,15 +137,31 @@ class Trivia {
                 }
             }
             this.arrayTorF.forEach(opcion => {
-                const otpsett = this.botonToF(opcion, clickboton);
+                const otpsett = this.botonOpcionMultiple(opcion, clickboton);
                 papa2.appendChild(otpsett);
             })
-
         }
-
-
     }
+    next() {
+        const papadelboton = document.getElementById('aiura');
+        papadelboton.innerHTML = '';
+        const clickboton2 = (event) => {
+            this.state = true;
+
+            this.restart();
+        }
+        const btn = this.botonReset('next', clickboton2);
+        papadelboton.appendChild(btn);
+    }
+    idk() {
+
+        this.start();
+        this.next();
+    };
+
 }
+
+
 export default Trivia;
 /* const op1 = document.getElementById('option1');
         const op2 = document.getElementById('option2');

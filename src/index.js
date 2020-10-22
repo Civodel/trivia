@@ -35,7 +35,7 @@ aceptar.addEventListener('click', function quest() {
                 //console.log(response.status);
                 //console.log(response.data.results);
                 const game = new Trivia(response.data.results);
-                game.start();
+                game.idk();
                 console.log(game.obtenerPregunta());
                 console.log(game.generaRandomPos());
                 console.log(game.opcionCorrecta);
